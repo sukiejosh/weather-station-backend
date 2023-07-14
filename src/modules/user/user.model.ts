@@ -48,8 +48,8 @@ const userSchema = new mongoose.Schema<IUserDoc, IUserModel>(
     },
     tokens: {
       type: [String],
-      default: []
-    }
+      default: [],
+    },
   },
   {
     timestamps: true,

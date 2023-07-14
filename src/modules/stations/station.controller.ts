@@ -1,12 +1,11 @@
 import { Request, Response } from 'express';
-import httpStatus from "http-status";
+import httpStatus from 'http-status';
 import mongoose from 'mongoose';
 import { ApiError } from '../errors';
 import { IOptions } from '../paginate/paginate';
 import { IUserDoc } from '../user/user.interfaces';
-import { catchAsync, pick } from "../utils";
-import * as stationService from "./station.service";
-
+import { catchAsync, pick } from '../utils';
+import * as stationService from './station.service';
 
 export const registerStation = catchAsync(async (req: Request, res: Response) => {
   const station = await stationService.registerStation(req.body, req.user as IUserDoc);
@@ -14,8 +13,8 @@ export const registerStation = catchAsync(async (req: Request, res: Response) =>
 });
 
 export const getRegToken = catchAsync(async (req: Request, res: Response) => {
-  //@ts-ignore
-  const userId = req.user?.id
+  // @ts-ignore
+  const userId = req.user?.id;
   if (!userId) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User not found');
   }
@@ -25,7 +24,7 @@ export const getRegToken = catchAsync(async (req: Request, res: Response) => {
 
 export const saveWeatherData = catchAsync(async (req: Request, res: Response) => {
   const stationId = req.params['stationId'];
-  let s
+  let s;
   if (typeof stationId === 'string') {
     s = await stationService.getStationByIdentifier(stationId);
     if (!s) {
@@ -37,42 +36,41 @@ export const saveWeatherData = catchAsync(async (req: Request, res: Response) =>
 });
 
 export const getStations = catchAsync(async (req: Request, res: Response) => {
-  //@ts-ignore
-  const userId = req.user?.id
+  // @ts-ignore
+  const userId = req.user?.id;
   if (!userId) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User not found');
   }
 
-  const { lang, lat } = req.body
+  const { lang, lat } = req.body;
 
-  if (lang && !lat || !lang && lat) {
+  if ((lang && !lat) || (!lang && lat)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Both lang and lat are required');
   }
 
-  //@ts-ignore
-  const filter = { ...pick(req.query, ['name', 'identifier', 'lang', 'lat']), owner: userId }
+  // @ts-ignore
+  const filter = { ...pick(req.query, ['name', 'identifier', 'lang', 'lat']), owner: userId };
   const options: IOptions = pick(req.query, ['sortBy', 'limit', 'page', 'projectBy']);
   const stations = await stationService.queryStations(filter, options);
-  console.log('ss', stations)
+  console.log('ss', stations);
   res.send(stations);
 });
 
 export const getWeatherData = catchAsync(async (req: Request, res: Response) => {
   const stationId = req.params['stationId'];
-  let s
+  let s;
   if (typeof stationId === 'string') {
     s = await stationService.getStationByIdentifier(stationId);
     if (!s) {
       throw new ApiError(httpStatus.NOT_FOUND, 'Station not found');
     }
   }
-  const filter = { station: s?.id }
+  const filter = { station: s?.id };
   const options: IOptions = pick(req.query, ['sortBy', 'limit', 'page', 'projectBy']);
 
   const weatherData = await stationService.getWeatherData(filter, options);
   res.status(httpStatus.CREATED).send(weatherData);
 });
-
 
 export const getStation = catchAsync(async (req: Request, res: Response) => {
   if (typeof req.params['stationId'] === 'string') {

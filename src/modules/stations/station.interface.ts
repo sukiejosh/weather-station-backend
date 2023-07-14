@@ -1,6 +1,6 @@
 import mongoose, { Document, Model } from 'mongoose';
-import { QueryResult } from "../paginate/paginate";
-import { AccessAndRefreshTokens } from "../token/token.interfaces";
+import { QueryResult } from '../paginate/paginate';
+import { AccessAndRefreshTokens } from '../token/token.interfaces';
 
 export interface IStation {
   name: string;
@@ -20,15 +20,12 @@ export interface IWeatherData {
   rainfall?: number;
 }
 
-export interface IStationDoc extends IStation, Document {
-}
+export interface IStationDoc extends IStation, Document {}
 
-export interface IWeatherDataDoc extends IWeatherData, Document {
-}
+export interface IWeatherDataDoc extends IWeatherData, Document {}
 
 export interface IWeatherDataModel extends Model<IWeatherDataDoc> {
   paginate(filter: Record<string, any>, options: Record<string, any>): Promise<QueryResult>;
-
 }
 
 export interface IStationModel extends Model<IStationDoc> {
@@ -38,9 +35,9 @@ export interface IStationModel extends Model<IStationDoc> {
 
 export type UpdateStationBody = Partial<IStation>;
 
-export type NewRegisteredStation = IStation
+export type NewRegisteredStation = IStation;
 
-export type NewCreatedStation = IStation
+export type NewCreatedStation = IStation;
 
 export interface IStationWithTokens {
   station: IStationDoc;

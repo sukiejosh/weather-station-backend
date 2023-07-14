@@ -5,4 +5,3 @@ import * as stationService from './station.service';
 // import * as stationValidation from './station.validation';
 
 export { Station, stationController, stationInterfaces, stationService };
-

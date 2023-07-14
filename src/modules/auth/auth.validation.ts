@@ -2,7 +2,7 @@ import Joi from 'joi';
 import { NewRegisteredUser } from '../user/user.interfaces';
 import { password } from '../validate/custom.validation';
 
-//@ts-ignore
+// @ts-ignore
 const registerBody: Record<keyof NewRegisteredUser, any> = {
   email: Joi.string().required().email(),
   password: Joi.string().required().custom(password),

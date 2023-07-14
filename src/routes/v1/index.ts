@@ -5,6 +5,7 @@ import stationRoute from './stations.route';
 import docsRoute from './swagger.route';
 import userRoute from './user.route';
 import weatherData from './weatherData.route';
+
 const router = express.Router();
 
 interface IRoute {
@@ -28,7 +29,7 @@ const defaultIRoute: IRoute[] = [
   {
     path: '/weather',
     route: weatherData,
-  }
+  },
 ];
 
 const devIRoute: IRoute[] = [

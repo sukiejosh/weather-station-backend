@@ -432,7 +432,7 @@ describe('Auth middleware', () => {
     await authMiddleware()(req, httpMocks.createResponse(), next);
 
     expect(next).toHaveBeenCalledWith();
-    const d = req.user as any
+    const d = req.user as any;
     expect(d._id as any).toEqual(userOne._id);
   });
 

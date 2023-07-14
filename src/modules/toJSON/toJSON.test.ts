@@ -9,8 +9,8 @@ interface SampleSchema {
   };
 }
 
-interface SampleSchemaDoc extends SampleSchema, Document { }
-interface SampleSchemaModel extends Model<SampleSchemaDoc> { }
+interface SampleSchemaDoc extends SampleSchema, Document {}
+interface SampleSchemaModel extends Model<SampleSchemaDoc> {}
 
 describe('toJSON plugin', () => {
   let connection: mongoose.Connection;
@@ -86,7 +86,7 @@ describe('toJSON plugin', () => {
         toJSON: {
           transform: (_doc, ret) => {
             // eslint-disable-next-line no-param-reassign
-            //@ts-ignore
+            // @ts-ignore
             delete ret.private;
           },
         },

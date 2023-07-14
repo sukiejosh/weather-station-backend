@@ -40,7 +40,6 @@ export const queryUsers = async (filter: Record<string, any>, options: IOptions)
   return users;
 };
 
-
 /**
  * Get user by id
  * @param {mongoose.Types.ObjectId} id
