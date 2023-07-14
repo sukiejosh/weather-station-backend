@@ -13,3 +13,18 @@ primary_region = "ams"
   auto_start_machines = true
   min_machines_running = 0
   processes = ["app"]
+
+[env]
+  JWT_SECRET = "thisisasamplesecret"
+  JWT_ACCESS_EXPIRATION_MINUTES = "43200"
+  JWT_REFRESH_EXPIRATION_DAYS = "43200"
+  JWT_RESET_PASSWORD_EXPIRATION_MINUTES = "10"
+  JWT_VERIFY_EMAIL_EXPIRATION_MINUTES = "10"
+  SMTP_HOST = "email-server"
+  SMTP_PORT = "1025"
+  SMTP_USERNAME = ""
+  SMTP_PASSWORD = ""
+  EMAIL_FROM = "dkfdk"
+  COOKIE_SECRET = "dfkhdkjfdf"
+  CLIENT_URL = "http://localhost:5000"
+
