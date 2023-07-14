@@ -1,22 +1,22 @@
 /* eslint-disable jest/no-commented-out-tests */
 import { faker } from '@faker-js/faker';
-import mongoose from 'mongoose';
-import request from 'supertest';
-import httpStatus from 'http-status';
-import httpMocks from 'node-mocks-http';
-import moment from 'moment';
-import bcrypt from 'bcryptjs';
 import { jest } from '@jest/globals';
+import bcrypt from 'bcryptjs';
+import httpStatus from 'http-status';
+import moment from 'moment';
+import mongoose from 'mongoose';
+import httpMocks from 'node-mocks-http';
+import request from 'supertest';
 import app from '../../app';
-import setupTestDB from '../jest/setupTestDB';
-import User from '../user/user.model';
 import config from '../../config/config';
-import { NewRegisteredUser } from '../user/user.interfaces';
+import ApiError from '../errors/ApiError';
+import setupTestDB from '../jest/setupTestDB';
+import Token from '../token/token.model';
 import * as tokenService from '../token/token.service';
 import tokenTypes from '../token/token.types';
-import Token from '../token/token.model';
+import { NewRegisteredUser } from '../user/user.interfaces';
+import User from '../user/user.model';
 import authMiddleware from './auth.middleware';
-import ApiError from '../errors/ApiError';
 
 setupTestDB();
 
@@ -432,7 +432,8 @@ describe('Auth middleware', () => {
     await authMiddleware()(req, httpMocks.createResponse(), next);
 
     expect(next).toHaveBeenCalledWith();
-    expect(req.user._id).toEqual(userOne._id);
+    const d = req.user as any
+    expect(d._id as any).toEqual(userOne._id);
   });
 
   test('should call next with unauthorized error if access token is not found in header', async () => {

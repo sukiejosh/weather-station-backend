@@ -1,10 +1,11 @@
-import httpStatus from 'http-status';
 import { Request, Response } from 'express';
-import catchAsync from '../utils/catchAsync';
+import httpStatus from 'http-status';
+import { emailService } from '../email';
 import { tokenService } from '../token';
 import { userService } from '../user';
+import { IUserDoc } from '../user/user.interfaces';
+import catchAsync from '../utils/catchAsync';
 import * as authService from './auth.service';
-import { emailService } from '../email';
 
 export const register = catchAsync(async (req: Request, res: Response) => {
   const user = await userService.registerUser(req.body);
@@ -41,8 +42,9 @@ export const resetPassword = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const sendVerificationEmail = catchAsync(async (req: Request, res: Response) => {
-  const verifyEmailToken = await tokenService.generateVerifyEmailToken(req.user);
-  await emailService.sendVerificationEmail(req.user.email, verifyEmailToken, req.user.name);
+  const userD = req.user as IUserDoc
+  const verifyEmailToken = await tokenService.generateVerifyEmailToken(userD);
+  await emailService.sendVerificationEmail(userD.email, verifyEmailToken, userD.name);
   res.status(httpStatus.NO_CONTENT).send();
 });
 

@@ -1,0 +1,59 @@
+@baseurl=http://localhost:3001/v1
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGIxNzkxZGNiZTY5MjE1MTcyZmE5ZjIiLCJpYXQiOjE2ODkzNTQ1MDAsImV4cCI6MTY4OTM1NjMwMCwidHlwZSI6ImFjY2VzcyJ9.gzq_wKuscf2-j1IR2o741dLpxLzjLijssce0f3V-56A
+
+
+//Create a user
+POST {{baseurl}}/auth/register HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Jos",
+    "email": "k@k.com",
+    "password": "12345678@l"
+}
+
+### Login a user
+POST {{baseurl}}/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "k@k.com",
+    "password": "12345678@l"
+}
+
+### Get a new token for a station
+GET {{baseurl}}/stations/gettoken HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Register a station
+POST {{baseurl}}/stations/create HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "Station 1",
+    "lang" : 565756645.3546545343454,
+    "lat" : 565756645.3546545343454
+}
+
+### Get all stations
+GET {{baseurl}}/stations HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+### Save weather data
+POST {{baseurl}}/weather/IRe5Lw6qRDuoOaE4v2gNkIsm7wfFhV7f HTTP/1.1
+Content-Type: application/json
+
+{
+    "bmpTemp": "05",
+    "dhtTemp": "50",
+    "humidity": "1000"
+}
+
+
+### GEt weather data
+GET {{baseurl}}/weather/IRe5Lw6qRDuoOaE4v2gNkIsm7wfFhV7f HTTP/1.1
+Content-Type: application/json
+

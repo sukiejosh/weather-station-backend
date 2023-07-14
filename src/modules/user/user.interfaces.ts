@@ -1,4 +1,4 @@
-import mongoose, { Model, Document } from 'mongoose';
+import mongoose, { Document, Model } from 'mongoose';
 import { QueryResult } from '../paginate/paginate';
 import { AccessAndRefreshTokens } from '../token/token.interfaces';
 
@@ -8,6 +8,7 @@ export interface IUser {
   password: string;
   role: string;
   isEmailVerified: boolean;
+  tokens?: string[];
 }
 
 export interface IUserDoc extends IUser, Document {
@@ -23,7 +24,7 @@ export type UpdateUserBody = Partial<IUser>;
 
 export type NewRegisteredUser = Omit<IUser, 'role' | 'isEmailVerified'>;
 
-export type NewCreatedUser = Omit<IUser, 'isEmailVerified'>;
+export type NewCreatedUser = Omit<IUser, 'isEmailVerified' | 'tokens'>;
 
 export interface IUserWithTokens {
   user: IUserDoc;

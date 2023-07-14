@@ -1,4 +1,4 @@
-import mongoose, { Model, Document } from 'mongoose';
+import mongoose, { Document, Model } from 'mongoose';
 import { toJSON } from '.';
 
 interface SampleSchema {
@@ -9,8 +9,8 @@ interface SampleSchema {
   };
 }
 
-interface SampleSchemaDoc extends SampleSchema, Document {}
-interface SampleSchemaModel extends Model<SampleSchemaDoc> {}
+interface SampleSchemaDoc extends SampleSchema, Document { }
+interface SampleSchemaModel extends Model<SampleSchemaDoc> { }
 
 describe('toJSON plugin', () => {
   let connection: mongoose.Connection;
@@ -86,6 +86,7 @@ describe('toJSON plugin', () => {
         toJSON: {
           transform: (_doc, ret) => {
             // eslint-disable-next-line no-param-reassign
+            //@ts-ignore
             delete ret.private;
           },
         },

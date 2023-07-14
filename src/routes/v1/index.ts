@@ -1,9 +1,10 @@
 import express, { Router } from 'express';
+import config from '../../config/config';
 import authRoute from './auth.route';
+import stationRoute from './stations.route';
 import docsRoute from './swagger.route';
 import userRoute from './user.route';
-import config from '../../config/config';
-
+import weatherData from './weatherData.route';
 const router = express.Router();
 
 interface IRoute {
@@ -20,6 +21,14 @@ const defaultIRoute: IRoute[] = [
     path: '/users',
     route: userRoute,
   },
+  {
+    path: '/stations',
+    route: stationRoute,
+  },
+  {
+    path: '/weather',
+    route: weatherData,
+  }
 ];
 
 const devIRoute: IRoute[] = [

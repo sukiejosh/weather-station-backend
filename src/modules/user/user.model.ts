@@ -1,9 +1,9 @@
+import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
 import validator from 'validator';
-import bcrypt from 'bcryptjs';
-import toJSON from '../toJSON/toJSON';
-import paginate from '../paginate/paginate';
 import { roles } from '../../config/roles';
+import paginate from '../paginate/paginate';
+import toJSON from '../toJSON/toJSON';
 import { IUserDoc, IUserModel } from './user.interfaces';
 
 const userSchema = new mongoose.Schema<IUserDoc, IUserModel>(
@@ -46,6 +46,10 @@ const userSchema = new mongoose.Schema<IUserDoc, IUserModel>(
       type: Boolean,
       default: false,
     },
+    tokens: {
+      type: [String],
+      default: []
+    }
   },
   {
     timestamps: true,

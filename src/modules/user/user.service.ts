@@ -1,9 +1,9 @@
 import httpStatus from 'http-status';
 import mongoose from 'mongoose';
-import User from './user.model';
 import ApiError from '../errors/ApiError';
 import { IOptions, QueryResult } from '../paginate/paginate';
-import { NewCreatedUser, UpdateUserBody, IUserDoc, NewRegisteredUser } from './user.interfaces';
+import { IUserDoc, NewCreatedUser, NewRegisteredUser, UpdateUserBody } from './user.interfaces';
+import User from './user.model';
 
 /**
  * Create a user
@@ -40,6 +40,7 @@ export const queryUsers = async (filter: Record<string, any>, options: IOptions)
   return users;
 };
 
+
 /**
  * Get user by id
  * @param {mongoose.Types.ObjectId} id
@@ -53,6 +54,18 @@ export const getUserById = async (id: mongoose.Types.ObjectId): Promise<IUserDoc
  * @returns {Promise<IUserDoc | null>}
  */
 export const getUserByEmail = async (email: string): Promise<IUserDoc | null> => User.findOne({ email });
+
+export const saveStationToken = async (userId: mongoose.Types.ObjectId, token: string) => {
+  const user = await getUserById(userId);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  if (!user.tokens) user.tokens = [];
+  user.tokens.push(token);
+  await user.save();
+  return user;
+};
 
 /**
  * Update user by id
