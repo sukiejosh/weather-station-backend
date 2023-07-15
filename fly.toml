@@ -22,13 +22,15 @@ primary_region = "ams"
   JWT_VERIFY_EMAIL_EXPIRATION_MINUTES = "10"
   SMTP_HOST = "email-server"
   SMTP_PORT = "1025"
-  SMTP_USERNAME = ""
-  SMTP_PASSWORD = ""
-  EMAIL_FROM = "dkfdk"
+  SMTP_USERNAME = "cxbcjhxbcxc"
+  SMTP_PASSWORD = "mnxkcjxcjk"
+  EMAIL_FROM = "dkfdk@dfnfdkj.com"
   COOKIE_SECRET = "dfkhdkjfdf"
   CLIENT_URL = "http://localhost:5000"
 
 [build]
   build-target = "production"
-  build-command = "yarn start"
+
+[experimental]
+cmd = ["yarn", "start"]
 
