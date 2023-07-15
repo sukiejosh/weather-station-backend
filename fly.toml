@@ -28,3 +28,7 @@ primary_region = "ams"
   COOKIE_SECRET = "dfkhdkjfdf"
   CLIENT_URL = "http://localhost:5000"
 
+[build]
+  build-target = "production"
+  build-command = "yarn start"
+
