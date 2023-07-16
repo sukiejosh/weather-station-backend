@@ -10,6 +10,7 @@ COPY ./src ./src
 RUN ls -a
 
 RUN yarn install --pure-lockfile && yarn compile
+RUN npm install pm2 -g
 
 # production stage
 
@@ -24,3 +25,5 @@ COPY package.json yarn.lock ecosystem.config.json ./
 RUN yarn install --production --pure-lockfile
 
 COPY --from=base /usr/src/app/dist ./dist
+
+CMD [ "pm2-runtime","ecosystem.config.json" ]

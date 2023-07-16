@@ -1,11 +1,12 @@
 import httpStatus from 'http-status';
 import mongoose from 'mongoose';
-import Token from '../token/token.model';
 import ApiError from '../errors/ApiError';
+import { ITokenDoc } from '../token/token.interfaces';
+import Token from '../token/token.model';
+import { generateAToken, generateAuthTokens, verifyAToken, verifyToken } from '../token/token.service';
 import tokenTypes from '../token/token.types';
-import { getUserByEmail, getUserById, updateUserById } from '../user/user.service';
 import { IUserDoc, IUserWithTokens } from '../user/user.interfaces';
-import { generateAuthTokens, verifyToken } from '../token/token.service';
+import { getUserByEmail, getUserById, updateUserById } from '../user/user.service';
 
 /**
  * Login with username and password
@@ -53,6 +54,22 @@ export const refreshAuth = async (refreshToken: string): Promise<IUserWithTokens
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate');
   }
 };
+
+export const generateStationToken = async (userId: string, stationId: string, days: number, type: typeof tokenTypes): Promise<string> => {
+  const user = await getUserById(new mongoose.Types.ObjectId(userId));
+  if (!user) {
+    throw new Error();
+  }
+  const token = await generateAToken(user, stationId, days, type);
+  return token;
+}
+
+export const verifyStationToken = async (token: string, stationId: string, type: typeof tokenTypes): Promise<ITokenDoc> => {
+  //@ts-ignore
+  const tokenDoc = await verifyAToken(token, stationId, type);
+  return tokenDoc;
+}
+
 
 /**
  * Reset password

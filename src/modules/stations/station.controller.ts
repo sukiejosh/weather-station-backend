@@ -1,13 +1,17 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import mongoose from 'mongoose';
+import { Namespace } from 'socket.io';
+import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 import { ApiError } from '../errors';
 import { IOptions } from '../paginate/paginate';
+import { verifyAToken } from '../token/token.service';
 import { IUserDoc } from '../user/user.interfaces';
 import { catchAsync, pick } from '../utils';
 import * as stationService from './station.service';
 
 export const registerStation = catchAsync(async (req: Request, res: Response) => {
+  console.log('user is', req.user)
   const station = await stationService.registerStation(req.body, req.user as IUserDoc);
   res.status(httpStatus.CREATED).send(station);
 });
@@ -22,16 +26,29 @@ export const getRegToken = catchAsync(async (req: Request, res: Response) => {
   res.status(httpStatus.CREATED).send(token);
 });
 
-export const saveWeatherData = catchAsync(async (req: Request, res: Response) => {
+export const saveWeatherData = (io: Namespace<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>) => catchAsync(async (req: Request, res: Response) => {
   const stationId = req.params['stationId'];
+  const token = req.query['token'];
+  if (!token) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Token is required');
+  }
+
+  const isValidToken = await verifyAToken(token as string, stationId as string, 'saveWeather');
+
+  if (!isValidToken) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid token');
+  }
+
   let s;
   if (typeof stationId === 'string') {
-    s = await stationService.getStationByIdentifier(stationId);
+    s = await stationService.getStationById(new mongoose.Types.ObjectId(stationId));
     if (!s) {
       throw new ApiError(httpStatus.NOT_FOUND, 'Station not found');
     }
   }
+  let room = `station-${stationId}`;
   const station = await stationService.saveWeatherData(s?.id, req.body as IUserDoc);
+  io.to(room).emit('weather_data', station);
   res.status(httpStatus.CREATED).send(station);
 });
 
@@ -50,24 +67,25 @@ export const getStations = catchAsync(async (req: Request, res: Response) => {
 
   // @ts-ignore
   const filter = { ...pick(req.query, ['name', 'identifier', 'lang', 'lat']), owner: userId };
-  const options: IOptions = pick(req.query, ['sortBy', 'limit', 'page', 'projectBy']);
+  const options: IOptions = { ...pick(req.query, ['sort', 'limit', 'page', 'projection']), lean: true }
   const stations = await stationService.queryStations(filter, options);
-  console.log('ss', stations);
   res.send(stations);
 });
 
 export const getWeatherData = catchAsync(async (req: Request, res: Response) => {
   const stationId = req.params['stationId'];
+  // @ts-ignore
+  const owner = req.user?.id;
   let s;
   if (typeof stationId === 'string') {
-    s = await stationService.getStationByIdentifier(stationId);
+    s = await stationService.getStationById(new mongoose.Types.ObjectId(stationId));
     if (!s) {
       throw new ApiError(httpStatus.NOT_FOUND, 'Station not found');
     }
   }
-  const filter = { station: s?.id };
-  const options: IOptions = pick(req.query, ['sortBy', 'limit', 'page', 'projectBy']);
-
+  const filter = { station: s?.id, owner };
+  const options: IOptions = { ...pick(req.query, ['sort', 'limit', 'page', 'projection']), lean: true }
+  console.log('oprions', options)
   const weatherData = await stationService.getWeatherData(filter, options);
   res.status(httpStatus.CREATED).send(weatherData);
 });

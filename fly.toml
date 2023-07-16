@@ -1,13 +1,10 @@
-# fly.toml app configuration file generated for weather-data-2 on 2023-07-15T01:32:30+01:00
+# fly.toml app configuration file generated for weather-data-2 on 2023-07-16T15:13:49+01:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
 app = "weather-data-2"
 primary_region = "ams"
-
-[experimental]
-  cmd = ["yarn", "start"]
 
 [build]
   build-target = "production"
@@ -31,5 +28,10 @@ primary_region = "ams"
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true
-  min_machines_running = 0
+  min_machines_running = 1
   processes = ["app"]
+
+[[services]]
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20

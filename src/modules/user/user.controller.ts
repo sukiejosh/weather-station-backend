@@ -1,10 +1,10 @@
-import httpStatus from 'http-status';
 import { Request, Response } from 'express';
+import httpStatus from 'http-status';
 import mongoose from 'mongoose';
-import catchAsync from '../utils/catchAsync';
 import ApiError from '../errors/ApiError';
-import pick from '../utils/pick';
 import { IOptions } from '../paginate/paginate';
+import catchAsync from '../utils/catchAsync';
+import pick from '../utils/pick';
 import * as userService from './user.service';
 
 export const createUser = catchAsync(async (req: Request, res: Response) => {
@@ -14,7 +14,7 @@ export const createUser = catchAsync(async (req: Request, res: Response) => {
 
 export const getUsers = catchAsync(async (req: Request, res: Response) => {
   const filter = pick(req.query, ['name', 'role']);
-  const options: IOptions = pick(req.query, ['sortBy', 'limit', 'page', 'projectBy']);
+  const options: IOptions = { ...pick(req.query, ['sort', 'limit', 'page', 'projection']), lean: true }
   const result = await userService.queryUsers(filter, options);
   res.send(result);
 });

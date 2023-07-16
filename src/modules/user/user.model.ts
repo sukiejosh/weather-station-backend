@@ -1,9 +1,8 @@
 import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
+import paginate from 'mongoose-paginate-v2';
 import validator from 'validator';
 import { roles } from '../../config/roles';
-import paginate from '../paginate/paginate';
-import toJSON from '../toJSON/toJSON';
 import { IUserDoc, IUserModel } from './user.interfaces';
 
 const userSchema = new mongoose.Schema<IUserDoc, IUserModel>(
@@ -57,7 +56,8 @@ const userSchema = new mongoose.Schema<IUserDoc, IUserModel>(
 );
 
 // add plugin that converts mongoose to json
-userSchema.plugin(toJSON);
+
+//@ts-ignore
 userSchema.plugin(paginate);
 
 /**

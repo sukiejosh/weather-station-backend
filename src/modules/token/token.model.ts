@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-import tokenTypes from './token.types';
 import toJSON from '../toJSON/toJSON';
 import { ITokenDoc, ITokenModel } from './token.interfaces';
+import tokenTypes from './token.types';
 
 const tokenSchema = new mongoose.Schema<ITokenDoc, ITokenModel>(
   {
@@ -15,9 +15,13 @@ const tokenSchema = new mongoose.Schema<ITokenDoc, ITokenModel>(
       ref: 'User',
       required: true,
     },
+    station: {
+      type: String,
+      required: false,
+    },
     type: {
       type: String,
-      enum: [tokenTypes.REFRESH, tokenTypes.RESET_PASSWORD, tokenTypes.VERIFY_EMAIL],
+      enum: [tokenTypes.REFRESH, tokenTypes.RESET_PASSWORD, tokenTypes.VERIFY_EMAIL, tokenTypes.SAVE_WEATHER],
       required: true,
     },
     expires: {

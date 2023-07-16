@@ -65,7 +65,7 @@ export const saveWeatherData = async (
   if (!station) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Station not found');
   }
-  const data = new WeatherData({ ...weatherData, station: station._id });
+  const data = new WeatherData({ ...weatherData, station: station._id, stationName: station.name });
   await data.save();
   return data;
 };

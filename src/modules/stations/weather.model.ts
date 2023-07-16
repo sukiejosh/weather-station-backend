@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
-import { paginate } from '../paginate';
-import { toJSON } from '../toJSON';
+import paginate from 'mongoose-paginate-v2';
 import { IWeatherDataDoc, IWeatherDataModel } from './station.interface';
 
 const weatherDataSchema = new mongoose.Schema<IWeatherDataDoc, IWeatherDataModel>(
@@ -10,7 +9,10 @@ const weatherDataSchema = new mongoose.Schema<IWeatherDataDoc, IWeatherDataModel
       ref: 'Station',
       required: true,
     },
-
+    stationName: {
+      type: String,
+      required: true,
+    },
     bmpTemp: {
       type: Number,
       required: false,
@@ -40,13 +42,23 @@ const weatherDataSchema = new mongoose.Schema<IWeatherDataDoc, IWeatherDataModel
       type: Number,
       required: false,
     },
+    lang: {
+      type: Number,
+      required: true,
+    },
+
+    lat: {
+      type: Number,
+      required: true,
+    },
   },
   {
     timestamps: true,
+    strict: false,
   }
 );
 
-weatherDataSchema.plugin(toJSON);
+//@ts-ignore
 weatherDataSchema.plugin(paginate);
 
 const WeatherData = mongoose.model<IWeatherDataDoc, IWeatherDataModel>('WeatherData', weatherDataSchema);

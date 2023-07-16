@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
-import { paginate } from '../paginate';
-import { toJSON } from '../toJSON';
+import paginate from 'mongoose-paginate-v2';
 import { IStation, IStationDoc, IStationModel } from './station.interface';
 
 const stationSchema = new mongoose.Schema<IStationDoc, IStationModel>(
@@ -21,23 +20,13 @@ const stationSchema = new mongoose.Schema<IStationDoc, IStationModel>(
       ref: 'User',
       required: true,
     },
-
-    lang: {
-      type: String,
-      required: true,
-    },
-
-    lat: {
-      type: String,
-      required: true,
-    },
   },
   {
     timestamps: true,
   }
 );
 
-stationSchema.plugin(toJSON);
+//@ts-ignore
 stationSchema.plugin(paginate);
 
 /**

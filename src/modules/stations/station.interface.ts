@@ -6,23 +6,25 @@ export interface IStation {
   name: string;
   identifier: string;
   owner: mongoose.Types.ObjectId;
-  lang: string;
-  lat: string;
+
 }
 
 export interface IWeatherData {
   station?: mongoose.Types.ObjectId;
+  stationName: string
   bmpTemp?: number;
   dhtTemp?: number;
   humidity?: number;
   pressure?: number;
   windspeed?: number;
   rainfall?: number;
+  lang: number;
+  lat: number;
 }
 
-export interface IStationDoc extends IStation, Document {}
+export interface IStationDoc extends IStation, Document { }
 
-export interface IWeatherDataDoc extends IWeatherData, Document {}
+export interface IWeatherDataDoc extends IWeatherData, Document { }
 
 export interface IWeatherDataModel extends Model<IWeatherDataDoc> {
   paginate(filter: Record<string, any>, options: Record<string, any>): Promise<QueryResult>;

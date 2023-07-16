@@ -2,6 +2,7 @@ import httpStatus from 'http-status';
 import jwt from 'jsonwebtoken';
 import moment, { Moment } from 'moment';
 import mongoose from 'mongoose';
+import ShortUniqueId from 'short-unique-id';
 import config from '../../config/config';
 import ApiError from '../errors/ApiError';
 import { userService } from '../user';
@@ -33,6 +34,11 @@ export const generateToken = (
   return jwt.sign(payload, secret);
 };
 
+export const generateRawToken = () => {
+  const uid = new ShortUniqueId({ length: 10 });
+  return uid();
+}
+
 /**
  * Save a token
  * @param {string} token
@@ -47,7 +53,8 @@ export const saveToken = async (
   userId: mongoose.Types.ObjectId,
   expires: Moment,
   type: string,
-  blacklisted: boolean = false
+  blacklisted: boolean = false,
+  station?: string,
 ): Promise<ITokenDoc> => {
   const tokenDoc = await Token.create({
     token,
@@ -55,6 +62,7 @@ export const saveToken = async (
     expires: expires.toDate(),
     type,
     blacklisted,
+    station,
   });
   return tokenDoc;
 };
@@ -106,6 +114,29 @@ export const generateAuthTokens = async (user: IUserDoc): Promise<AccessAndRefre
     },
   };
 };
+
+export const generateAToken = async (user: IUserDoc, stationId: string, days: number, type: typeof tokenTypes): Promise<string> => {
+  const expires = moment().add(days, 'days');
+  const saveWeatherToken = generateRawToken()
+  //@ts-ignore
+  await saveToken(saveWeatherToken, user.id, expires, type, false, stationId);
+  return saveWeatherToken;
+}
+
+export const verifyAToken = async (token: string, stationId: string, type: string): Promise<ITokenDoc> => {
+  const tokenDoc = await Token.findOne({
+    token,
+    type,
+    blacklisted: false,
+    station: stationId,
+  });
+  if (!tokenDoc) {
+    throw new Error('Token not found');
+  }
+  return tokenDoc;
+};
+
+
 
 /**
  * Generate reset password token
