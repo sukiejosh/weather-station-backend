@@ -13,16 +13,10 @@ const weatherDataSchema = new mongoose.Schema<IWeatherDataDoc, IWeatherDataModel
       type: String,
       required: true,
     },
-    bmpTemp: {
+    temp: {
       type: Number,
       required: false,
     },
-
-    dhtTemp: {
-      type: Number,
-      required: false,
-    },
-
     humidity: {
       type: Number,
       required: false,

@@ -12,8 +12,7 @@ export interface IStation {
 export interface IWeatherData {
   station?: mongoose.Types.ObjectId;
   stationName: string
-  bmpTemp?: number;
-  dhtTemp?: number;
+  temp?: number;
   humidity?: number;
   pressure?: number;
   windspeed?: number;
