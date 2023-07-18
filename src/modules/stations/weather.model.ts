@@ -38,12 +38,12 @@ const weatherDataSchema = new mongoose.Schema<IWeatherDataDoc, IWeatherDataModel
     },
     lang: {
       type: Number,
-      required: true,
+      required: false,
     },
 
     lat: {
       type: Number,
-      required: true,
+      required: false,
     },
   },
   {

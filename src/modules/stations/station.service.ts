@@ -53,7 +53,7 @@ export const queryStations = async (filter: Record<string, any>, options: Record
   return stations;
 };
 
-export const getStationById = async (id: mongoose.Types.ObjectId): Promise<IStationDoc | null> => Station.findById(id);
+export const getStationById = async (id: mongoose.Types.ObjectId): Promise<IStationDoc | null> => Station.findById({ _id: id });
 
 export const getStationByIdentifier = async (id: string): Promise<IStationDoc | null> => Station.findOne({ identifier: id });
 

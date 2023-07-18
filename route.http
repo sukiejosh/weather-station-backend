@@ -98,6 +98,6 @@ Content-Type: application/json
 
 
 ### GEt weather data
-GET {{baseurl}}/weather/64b37feff9b5355a06638a9b?limit=1&sort=asc HTTP/1.1
+GET {{baseurl}}/weather/64b3882b2af2053c380251c0?limit=1&sort=asc&page=-1 HTTP/1.1
 Content-Type: application/json
 
