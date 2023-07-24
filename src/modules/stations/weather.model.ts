@@ -40,11 +40,14 @@ const weatherDataSchema = new mongoose.Schema<IWeatherDataDoc, IWeatherDataModel
       type: Number,
       required: false,
     },
-
     lat: {
       type: Number,
       required: false,
     },
+    altitude: {
+      type: Number,
+      required: false,
+    }
   },
   {
     timestamps: true,

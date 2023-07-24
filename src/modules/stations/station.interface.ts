@@ -19,6 +19,7 @@ export interface IWeatherData {
   rainfall?: number;
   lang: number;
   lat: number;
+  altitude: number;
 }
 
 export interface IStationDoc extends IStation, Document { }

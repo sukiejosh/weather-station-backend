@@ -9,6 +9,9 @@ const verifyCallback =
   (req: Request, resolve: any, reject: any, requiredRights: string[]) =>
     async (err: Error, user: IUserDoc, info: string) => {
       if (err || info || !user) {
+        console.log('err', err)
+        console.log('info', info)
+        console.log('no user', user)
         return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate'));
       }
       req.user = user;
@@ -30,7 +33,7 @@ const authMiddleware =
     async (req: Request, res: Response, next: NextFunction) =>
 
       new Promise<void>((resolve, reject) => {
-        // console.log('socket is', socket, 'req is', req)
+        console.log('req is', req.headers)
         passport.authenticate('jwt', { session: false }, verifyCallback(req, resolve, reject, requiredRights))(req, res, next);
       })
         .then(() => {

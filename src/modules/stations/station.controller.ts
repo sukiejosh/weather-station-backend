@@ -84,7 +84,8 @@ export const getWeatherData = catchAsync(async (req: Request, res: Response) => 
     }
   }
   const filter = { station: s?.id, owner };
-  const options: IOptions = { ...pick(req.query, ['sort', 'limit', 'page', 'projection']), lean: true, sort: { createdAt: -1 } }
+  //@ts-ignore
+  const options: IOptions = { ...pick(req.query, ['sort', 'limit', 'page', 'projection']), lean: true, sort: { createdAt: -1 }, pagination: req?.query?.all && req?.query?.all == true }
   console.log('oprions', options)
   const weatherData = await stationService.getWeatherData(filter, options);
   res.status(httpStatus.CREATED).send(weatherData);
