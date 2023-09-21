@@ -16,3 +16,4 @@ dist
 
 # docker volume
 data
+src/web-app-backend.zip

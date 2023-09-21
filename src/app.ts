@@ -22,8 +22,10 @@ if (config.env !== 'test') {
 app.use(helmet());
 
 // enable cors
-app.use(cors());
-app.options('*', cors());
+app.use(cors({
+  origin: '*'
+}));
+// app.options('*', cors());
 
 // parse json request body
 app.use(express.json());

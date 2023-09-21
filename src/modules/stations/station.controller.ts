@@ -78,7 +78,7 @@ export const getWeatherData = catchAsync(async (req: Request, res: Response) => 
   const owner = req.user?.id;
   let s;
   if (typeof stationId === 'string') {
-    s = await stationService.getStationById(new mongoose.Types.ObjectId(stationId));
+    s = await stationService.getStationById(new mongoose.Types.ObjectId(stationId));   
     if (!s) {
       throw new ApiError(httpStatus.NOT_FOUND, 'Station not found');
     }
